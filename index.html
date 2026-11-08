@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>RUTNADY S.A. | Arquitectura & Albañilería</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 20px; background: #f5f6fa; }
+        header { background: #2c3e50; color: white; text-align: center; padding: 20px; border-radius: 8px; }
+        .card { background: white; padding: 20px; border-radius: 8px; margin-top: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .owners { font-weight: bold; color: #2c3e50; margin: 12px 0; line-height: 1.6; }
+        
+        /* DISEÑO DE LA GALERÍA: 5 imágenes una al lado de la otra */
+        .gallery-container { 
+            display: flex; 
+            gap: 10px; 
+            margin: 20px 0; 
+            overflow-x: auto; /* Permite deslizar si la pantalla es chica como un celular */
+            padding-bottom: 10px;
+        }
+        .gallery-image { 
+            flex: 1; 
+            min-width: 100px; /* Tamaño mínimo para cada foto */
+            height: 150px; 
+            object-fit: cover; 
+            border-radius: 6px; 
+            border: 1px solid #ccc; 
+        }
+
+        /* Caja fija del Chatbot */
+        #chat-box { background: white; border: 2px solid #2c3e50; border-radius: 12px; height: 470px; display: flex; flex-direction: column; margin-top: 20px; }
+        .chat-messages { flex: 1; padding: 15px; overflow-y: auto; background: #f8f9fa; display: flex; flex-direction: column; gap: 10px; }
+        .msg { padding: 10px; border-radius: 8px; max-width: 80%; line-height: 1.4; font-size: 14px; }
+        .msg.bot { background: #e9ecef; align-self: flex-start; }
+        .msg.user { background: #d35400; color: white; align-self: flex-end; }
+        .btn { display: inline-block; background: #25d366; color: white; text-decoration: none; padding: 8px 12px; border-radius: 20px; margin-top: 5px; font-weight: bold; font-size: 12px; }
+        .btn.ig { background: #e1306c; margin-left: 5px; }
+        .btn.g { background: #4285F4; color: white; }
+        .chat-input { display: flex; padding: 10px; border-top: 1px solid #eee; background: white; }
+        .chat-input input { flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 20px; outline: none; }
+        .chat-input button { background: #d35400; color: white; border: none; padding: 0 15px; margin-left: 5px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>RUTNADY S.A.</h1>
+        <p>Princich Daniel • Sotelo Ruth • Espinoza Belén</p> <img src="ima5.jpg" alt="Obra 1" width="400" height="150"> 
+    </header>
+
+    <div class="card">
+	
+        <h2>Socios Fundadores:</h2>
+        <div class="owners">
+            • Princich Daniel<br>
+            • Sotelo Ruth<br>
+            • Espinoza Belén<br>
+			
+		               
+               <br><br><a href='https://WhatsApp.com' target='_blank' class='btn'>🟢 WhatsApp Directo</a> 
+                  <a href='https://instagram.com' target='_blank' class='btn ig'>📸 Instagram</a>
+	
+        </div>
+  
+
+        <!-- 📸 GALERÍA DE 5 IMÁGENES UNA AL LADO DE LA OTRA -->
+        <div class="gallery-container">
+            <img src="ima1.jpg" alt="Obra 1" width="230" height="200"> 
+            <img src="ima2.jpg" alt="Obra 1" width="250" height="200"> 
+            <img src="ima3.jpg" alt="Obra 1" width="250" height="200"> 
+            <img src="ima4.jpg" alt="Obra 1" width="250" height="200"> 
+            <img src="ima6.jpg" alt="Obra 1" width="230" height="200"> 
+        </div>
+
+        <p>Ingresá las medidas abajo para calcular materiales reales, presupuestos o ver ideas de planos arquitectónicos:</p>
+    </div>
+
+    <div id="chat-box">
+        <div style="background:#2c3e50; color:white; padding:10px; font-weight:bold; border-radius:10px 10px 0 0;">Asistente Técnico de Obra</div>
+        <div class="chat-messages" id="box-msg">
+            <div class="msg bot">¡Bienvenido a nuestra empresa! contame en que te ayudamos.</div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="user-txt" placeholder="Ej: material 4x4, costo, ideas..." onkeypress="checkEnter(event)">
+            <button onclick="enviarMensaje()">Enviar</button>
+        </div>
+    </div>
+
+    <script>
+        var memoriaL1 = 4;
+        var memoriaL2 = 4;
+        var memoriaArea = 16;
+
+        function checkEnter(e) {
+            if (e.key === "Enter") enviarMensaje();
+        }
+
+        function enviarMensaje() {
+            var campo = document.getElementById("user-txt");
+            var texto = campo.value.trim();
+            if(texto === "") return;
+
+            var contenedor = document.getElementById("box-msg");
+            contenedor.innerHTML += '<div class="msg user">' + campo.value + '</div>';
+            campo.value = "";
+            contenedor.scrollTop = contenedor.scrollHeight;
+
+            setTimeout(function() {
+                var minuscula = texto.toLowerCase();
+                var redes = "<br><br><a href='https://wa.me' target='_blank' class='btn'>🟢 WhatsApp</a><a href='https://instagram.com' target='_blank' class='btn ig'>📸 Instagram</a>";
+                
+                var buscador = minuscula.match(/(\d+)\s*(?:x|por|\s)\s*(\d+)/);
+
+                if (buscador !== null) {
+                    memoriaL1 = parseInt(buscador[1]);
+                    memoriaL2 = parseInt(buscador[2]);
+                    memoriaArea = memoriaL1 * memoriaL2;
+                }
+
+                if(minuscula.includes("idea") || minuscula.includes("imagen") || minuscula.includes("foto") || minuscula.includes("plano")) {
+                    var textoBuscado = "planos+de+casas+" + memoriaL1 + "x" + memoriaL2 + "+metros+modernas";
+                    var urlBase = "https://google.com";
+                    var linkCompleto = urlBase + "?tbm=isch&q=" + textoBuscado;
+                    
+                    var respuesta = "✨ <b>Galería de Ideas para tu proyecto de " + memoriaL1 + "x" + memoriaL2 + " (" + memoriaArea + " m²):</b><br>Preparé la búsqueda oficial en Google Imágenes. Hacé clic abajo para verlas:<br><br><a href='" + linkCompleto + "' target='_blank' class='btn g'>🔍 Abrir Planos en Google</a>" + redes;
+                }
+                else if(minuscula.includes("costo") || minuscula.includes("cuesta") || minuscula.includes("precio") || minuscula.includes("presupuesto")) {
+                    var costoTotal = memoriaArea * 380;
+                    var respuesta = "📋 <b>Presupuesto Estructural para " + memoriaL1 + "x" + memoriaL2 + " (" + memoriaArea + " m²):</b><br>• Costo base aproximado: <b>$" + costoTotal.toLocaleString() + " USD</b>.<br><br><i>*Este valor cubre la mano de obra y materiales para la estructura base (obra gruesa).</i>" + redes;
+                }
+                else if(minuscula.includes("material") || minuscula.includes("cemento") || minuscula.includes("ladrillo") || buscador !== null) {
+                    var cemento = Math.ceil(memoriaArea * 0.65);
+                    var ladrillos = memoriaArea * 15;
+                    var arena = (memoriaArea * 0.06).toFixed(2);
+                    var cal = Math.ceil(memoriaArea * 0.35);
+                    var hierro8 = Math.ceil(memoriaArea * 1.5); 
+                    var hierro6 = Math.ceil(memoriaArea * 1.2); 
+
+                    var respuesta = "📊 <b>Cálculo Técnico de Materiales para " + memoriaL1 + "x" + memoriaL2 + " (" + memoriaArea + " m²):</b><br>" +
+                                "• <b>Cemento:</b> ~" + cemento.toLocaleString() + " bolsas (50kg).<br>" +
+                                "• <b>Cal Hidráulica:</b> ~" + cal.toLocaleString() + " bolsas.<br>" +
+                                "• <b>Ladrillos Huecos (12cm):</b> ~" + ladrillos.toLocaleString() + " unidades.<br>" +
+                                "• <b>Arena Limpia:</b> ~" + arena.toLocaleString() + " m³.<br>" +
+                                "• <b>Hierro del 8 (Columnas/Vigas):</b> ~" + hierro8.toLocaleString() + " metros.<br>" +
+                                "• <b>Hierro del 6 (Estribos/Ligas):</b> ~" + hierro6.toLocaleString() + " metros.<br><br>" +
+                                "💡 <i>Escribí la palabra <b>'costo'</b> si querés conocer el presupuesto estimado en dinero para estos metros.</i>" + redes;
+                }
+                else {
+                    var respuesta = "👋 ¡Hola! Soy el asistente técnico de <b>RUTNADY S.A.</b><br><br>Calculo materiales y presupuestos para la medida que me pidas. Intentá escribiendo:<br>- <i>'materiales para 10x10'</i><br>- <i>'cuanto cuesta una pieza de 4x4'</i>" + redes;
+                }
+
+                contenedor.innerHTML += '<div class="msg bot">' + respuesta + '</div>';
+                contenedor.scrollTop = contenedor.scrollHeight;
+            }, 150);
+        }
+    </script>
+</body>
+</html>
+        </div>
+        </div>
+<br><br>
+     <!-- 📍 SECCIÓN DE DIRECCIÓN CON ENLACE DE BÚSQUEDA CORREGIDO -->
+        <div class="location-box">
+            <div class="location-title">📍 Oficina y Depósito Central:</div>
+            <div> "Calle Thompson y Santa Fe — Barrio Itatí — Clorinda, Formosa"	</div>
+            <a href="https://google.com/maps">  🗺️ Ver cómo llegar en Google Maps</a>
+        </div>
+
+                 
+    
+
+
+        
+
+
+
+
+
